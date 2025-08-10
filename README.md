@@ -3,6 +3,8 @@
 A little demo project showcasing various display tests and patterns on an
 ESP32-C3 development board with a 0.42 inch OLED display attached to the baord.
 
+![Demo Animation](ESP-OLED-test.gif)
+
 ![ESP32-C3 OLED Development Board](Device_image.png)
 
 ## Hardware Requirements
