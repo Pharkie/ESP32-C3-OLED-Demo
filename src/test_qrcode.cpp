@@ -5,6 +5,10 @@ void displayQRCode()
 {
     display.clearDisplay();
 
+    // QR Code version configuration (DRY principle)
+    const uint8_t QR_VERSION = 2;
+    const uint8_t QR_ECC_LEVEL = 1; // ECC_MEDIUM
+
     /*
      * QR Code Configuration Balance:
      *
@@ -20,12 +24,12 @@ void displayQRCode()
      * ECC_QUARTILE (2):  ~25% error recovery - robust scanning
      * ECC_HIGH (3):      ~30% error recovery - maximum reliability
      *
-     * Current choice: Version 4 + ECC_MEDIUM + Quiet Zone
-     * - Size: 33x33 modules + 4-pixel quiet zone = 41x41 total
-     * - Capacity: ~78 alphanumeric chars (our URL: 52 chars = 67% usage)
-     * - Recovery: Can handle 15% corruption/scanning issues
-     * - Colors: Black modules on white background (standard)
-     * - Trade-off: iPhone-optimized for better recognition
+     * Current choice: Version 2 + ECC_MEDIUM + Quiet Zone
+     * - Size: 25x25 modules + 4-pixel quiet zone = 33x33 total
+     * - Capacity: ~40 alphanumeric chars (our URL: 52 chars = may not fit)
+     * - Recovery: Can handle 15% corruption/scanning issues - good balance
+     * - Colors: White modules on black background (no white background)
+     * - Trade-off: Smaller size but may need to reduce ECC if URL too long
      *
      * Scanning Notes:
      * - iPhone camera may not auto-detect small QR codes (use dedicated QR apps)
@@ -36,10 +40,10 @@ void displayQRCode()
 
     // Create QR Code
     QRCode qrcode;
-    uint8_t qrcodeData[qrcode_getBufferSize(4)]; // Version 4 QR code
+    uint8_t qrcodeData[qrcode_getBufferSize(QR_VERSION)]; // Version defined above
 
-    // Generate QR code for GitHub repository
-    qrcode_initText(&qrcode, qrcodeData, 4, 1, QR_CODE_URL);
+    // Generate QR code for GitHub repository with medium error correction
+    qrcode_initText(&qrcode, qrcodeData, QR_VERSION, QR_ECC_LEVEL, QR_CODE_URL);
 
     // Add quiet zone (4 modules minimum around QR code per QR standard)
     uint8_t quietZone = 4;
@@ -49,21 +53,23 @@ void displayQRCode()
     uint8_t qrStartX = (ACTUAL_WIDTH - totalSize) / 2 + quietZone;
     uint8_t qrStartY = (ACTUAL_HEIGHT - totalSize) / 2 + quietZone;
 
-    // Draw white background for quiet zone (required for QR recognition)
-    fillRectActual((ACTUAL_WIDTH - totalSize) / 2, (ACTUAL_HEIGHT - totalSize) / 2,
-                   totalSize, totalSize, SH110X_WHITE);
-
-    // Draw QR code modules as BLACK on WHITE background (standard convention)
+    // Draw QR code modules as WHITE on BLACK background (no white background)
     for (uint8_t y = 0; y < qrcode.size; y++)
     {
         for (uint8_t x = 0; x < qrcode.size; x++)
         {
             if (qrcode_getModule(&qrcode, x, y))
             {
-                drawPixelActual(qrStartX + x, qrStartY + y, SH110X_BLACK);
+                drawPixelActual(qrStartX + x, qrStartY + y, SH110X_WHITE);
             }
         }
     }
+
+    // Add QR test label at top left (like other tests)
+    setCursorActual(0, 0);
+    display.setTextSize(1);
+    display.setTextColor(SH110X_WHITE);
+    display.print(F("QR"));
 
     display.display();
 }

@@ -6,7 +6,7 @@ void displayScrollText()
     static int16_t textX = ACTUAL_WIDTH;
     static unsigned long lastScroll = 0;
 
-    if (millis() - lastScroll > 100)
+    if (millis() - lastScroll > 67) // Increased speed by 50% (was 100ms)
     {
         lastScroll = millis();
         textX -= 2;
