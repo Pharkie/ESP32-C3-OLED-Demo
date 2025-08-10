@@ -71,50 +71,50 @@ void setup()
 
 void loop()
 {
-    // // Just display QR code (comment out cycling for testing)
-    // displayQRCode();
-    // delay(100);
+    // Just display QR code (comment out cycling for testing)
+    displayQRCode();
+    delay(100);
 
-    // Cycle through different test patterns
-    static uint8_t testMode = 0;
-    static unsigned long lastChange = 0;
+    // // Cycle through different test patterns
+    // static uint8_t testMode = 0;
+    // static unsigned long lastChange = 0;
 
-    if (millis() - lastChange > 2000)
-    { // Change every 2 seconds (faster cycling)
-        lastChange = millis();
-        testMode = (testMode + 1) % 9; // Now 9 different tests
-    }
+    // if (millis() - lastChange > 2000)
+    // { // Change every 2 seconds (faster cycling)
+    //     lastChange = millis();
+    //     testMode = (testMode + 1) % 9; // Now 9 different tests
+    // }
 
-    switch (testMode)
-    {
-    case 0:
-        displayPixelTest();
-        break;
-    case 1:
-        displayBorderTest();
-        break;
-    case 2:
-        displayPatternTest();
-        break;
-    case 3:
-        displayScrollText();
-        break;
-    case 4:
-        displayBarGraph();
-        break;
-    case 5:
-        displayCircleTest();
-        break;
-    case 6:
-        displayLinePattern();
-        break;
-    case 7:
-        displayGradientTest();
-        break;
-    case 8:
-        displayQRCode();
-        break;
-    }
+    // switch (testMode)
+    // {
+    // case 0:
+    //     displayPixelTest();
+    //     break;
+    // case 1:
+    //     displayBorderTest();
+    //     break;
+    // case 2:
+    //     displayPatternTest();
+    //     break;
+    // case 3:
+    //     displayScrollText();
+    //     break;
+    // case 4:
+    //     displayBarGraph();
+    //     break;
+    // case 5:
+    //     displayCircleTest();
+    //     break;
+    // case 6:
+    //     displayLinePattern();
+    //     break;
+    // case 7:
+    //     displayGradientTest();
+    //     break;
+    // case 8:
+    //     displayQRCode();
+    //     break;
+    // }
 
-    delay(50);
+    // delay(50);
 }

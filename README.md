@@ -149,9 +149,11 @@ The QR code test generates a scannable code linking to this GitHub repository:
 
 **Scanning Tips:**
 
-- Use dedicated QR scanner apps rather than iPhone camera
-- Turn OFF macro mode for better recognition
-- Hold phone 12 inches away.
+- Turn off Macro mode (flower icon) or avoid being so close the camera goes into
+  Macro mode, since it seems to stop picking up QR codes
+- Better to keep a distance from the code then use Zoom to bring the QR code
+  into focus in the frame.
+- Dedicated QR scanner apps seem to work better than the iPhone camera app
 
 ## License
 
