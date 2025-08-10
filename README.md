@@ -1,8 +1,7 @@
 # ESP32-C3 OLED Demo
 
-A comprehensive PlatformIO project showcasing various display tests and patterns
-on an ESP32-C3 development board with a 0.42 inch OLED display, including QR
-code generation.
+A little demo project showcasing various display tests and patterns on an
+ESP32-C3 development board with a 0.42 inch OLED display attached to the baord.
 
 ## Hardware Requirements
 
@@ -24,28 +23,10 @@ This demo includes 9 different display tests that cycle every 2 seconds:
 8. **Gradient Test** - Dithered gradient effect using pixel patterns
 9. **QR Code** - Links to this GitHub repository (scannable with QR apps)
 
-## PlatformIO Setup
+## Pre-built Firmware
 
-This project uses PlatformIO for development. Libraries are automatically
-managed through `platformio.ini`.
-
-### Required Libraries (Auto-installed):
-
-1. **Adafruit SH110X** - SH1106 OLED display driver (works better than SSD1306)
-2. **Adafruit GFX Library** - Graphics library for drawing functions
-3. **QRCode** - QR code generation library
-4. **Wire** - Built-in I2C library
-
-### Quick Start:
-
-1. Make sure you have PlatformIO extension installed in VS Code
-2. Open this folder in VS Code
-3. PlatformIO will automatically install dependencies
-4. Build and upload using PlatformIO commands
-
-## Quick Flash (Pre-built Firmware)
-
-If you just want to try the demo without setting up the development environment:
+**Just want to try the demo?** Flash the pre-built firmware without any
+development setup:
 
 ### Option 1: Using esptool.py
 
@@ -91,30 +72,40 @@ _Note: Requires Chrome/Edge browser with Web Serial API support_
    - **Flash Size**: 4MB
 4. **Connect ESP32-C3** via USB and click "START"
 
-## Pin Configuration
+## Development Setup (PlatformIO)
 
-The project is configured for the specific ESP32-C3 OLED board pinout:
+**Want to modify the code or build from source?** This project uses PlatformIO
+for development.
 
-- **SDA (Data)**: GPIO5
-- **SCL (Clock)**: GPIO6
-- **LED**: GPIO8 (onboard LED for error indication)
-- **OLED Address**: 0x3C (standard for SH1106 displays)
-- **Display Size**: 72x40 pixels (declared as 128x64 with offset for
-  compatibility)
+### Required Libraries (Auto-installed):
 
-The display uses a calibrated offset (X=26, Y=24) to properly center content on
-the 72x40 screen.
+1. **Adafruit SH110X** - SH1106 OLED display driver (works better than SSD1306)
+2. **Adafruit GFX Library** - Graphics library for drawing functions
+3. **QRCode** - QR code generation library
+4. **Wire** - Built-in I2C library
 
-If your board uses different pins, modify these values in `include/config.h`:
+### Setup Steps:
 
-```cpp
-#define SDA_PIN 5
-#define SCL_PIN 6
-#define SCREEN_OFFSET_X 26
-#define SCREEN_OFFSET_Y 24
-```
+1. Make sure you have PlatformIO extension installed in VS Code
+2. Open this folder in VS Code
+3. PlatformIO will automatically install dependencies
+4. Build and upload using PlatformIO commands
 
-## Project Structure
+### PlatformIO Commands:
+
+- **Build**: `pio run`
+- **Upload**: `pio run --target upload`
+- **Serial Monitor**: `pio device monitor`
+- **Clean**: `pio run --target clean`
+
+## Code Structure Overview
+
+- **Main Program**: `main.cpp` - Setup, loop, and test coordination
+- **Configuration**: `config.h` - All hardware settings and constants
+- **Display Helpers**: `display_helpers.cpp` - Offset-aware drawing functions
+- **Individual Tests**: Each test pattern in its own `.cpp` file for modularity
+
+## Code Structure Detail
 
 The code is organized into modular files for maintainability:
 
@@ -138,6 +129,29 @@ The code is organized into modular files for maintainability:
 └── platformio.ini        # Project configuration
 ```
 
+## Pin Configuration
+
+The project is configured for the specific ESP32-C3 OLED board pinout:
+
+- **SDA (Data)**: GPIO5
+- **SCL (Clock)**: GPIO6
+- **LED**: GPIO8 (onboard LED for error indication)
+- **OLED Address**: 0x3C (standard for SH1106 displays)
+- **Display Size**: 72x40 pixels (declared as 128x64 with offset for
+  compatibility)
+
+The display uses a calibrated offset (X=26, Y=24) to properly center content on
+the 72x40 screen.
+
+If your board uses different pins, modify these values in `include/config.h`:
+
+```cpp
+#define SDA_PIN 5
+#define SCL_PIN 6
+#define SCREEN_OFFSET_X 26
+#define SCREEN_OFFSET_Y 24
+```
+
 ## QR Code Feature
 
 The QR code test generates a scannable code linking to this GitHub repository:
@@ -153,15 +167,9 @@ The QR code test generates a scannable code linking to this GitHub repository:
 - Turn OFF macro mode for better recognition
 - Hold phone 8-12 inches away with good lighting
 
-## How to Use
+## Build instructions
 
-### Option A: Flash Pre-built Firmware (Easiest)
-
-Use the pre-built firmware from
-[Releases](https://github.com/Pharkie/ESP32-C3-OLED-Demo/releases) - see "Quick
-Flash" section above.
-
-### Option B: Build from Source (Development)
+If you want to modify the code or build from source:
 
 1. **Open in VS Code with PlatformIO**:
 
@@ -184,13 +192,6 @@ Flash" section above.
    - Use Ctrl+Shift+P → "PlatformIO: Serial Monitor"
    - Or click the plug icon in the PlatformIO toolbar
    - Baud rate is set to 115200
-
-## PlatformIO Commands
-
-- **Build**: `pio run`
-- **Upload**: `pio run --target upload`
-- **Serial Monitor**: `pio device monitor`
-- **Clean**: `pio run --target clean`
 
 ## Troubleshooting
 
@@ -231,13 +232,6 @@ Some ESP32-C3 boards may use different I2C pins:
 - GPIO21 (SDA), GPIO22 (SCL)
 
 Check your board's documentation and update `config.h` accordingly.
-
-## Code Structure
-
-- **Main Program**: `main.cpp` - Setup, loop, and test coordination
-- **Configuration**: `config.h` - All hardware settings and constants
-- **Display Helpers**: `display_helpers.cpp` - Offset-aware drawing functions
-- **Individual Tests**: Each test pattern in its own `.cpp` file for modularity
 
 ## Customization
 

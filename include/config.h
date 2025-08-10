@@ -27,6 +27,9 @@
 #define LED_PIN 8  // Onboard LED
 #define BOOT_PIN 9 // Boot button
 
+// QR Code configuration
+#define QR_CODE_URL "https://github.com/Pharkie/ESP32-C3-OLED-Demo"
+
 // External display object reference
 extern Adafruit_SH1106G display;
 

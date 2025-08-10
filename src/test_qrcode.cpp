@@ -39,7 +39,7 @@ void displayQRCode()
     uint8_t qrcodeData[qrcode_getBufferSize(4)]; // Version 4 QR code
 
     // Generate QR code for GitHub repository
-    qrcode_initText(&qrcode, qrcodeData, 4, 1, "https://github.com/Pharkie/ESP32-C3-OLED-Demo");
+    qrcode_initText(&qrcode, qrcodeData, 4, 1, QR_CODE_URL);
 
     // Add quiet zone (4 modules minimum around QR code per QR standard)
     uint8_t quietZone = 4;
