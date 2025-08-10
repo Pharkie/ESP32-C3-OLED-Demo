@@ -43,6 +43,54 @@ managed through `platformio.ini`.
 3. PlatformIO will automatically install dependencies
 4. Build and upload using PlatformIO commands
 
+## Quick Flash (Pre-built Firmware)
+
+If you just want to try the demo without setting up the development environment:
+
+### Option 1: Using esptool.py
+
+```bash
+# Install esptool
+pip install esptool
+
+# Flash the firmware (replace /dev/ttyUSB0 with your port)
+esptool.py --chip esp32c3 --port /dev/ttyUSB0 --baud 460800 write_flash 0x10000 firmware.bin
+
+# On macOS, port might be something like /dev/cu.usbmodem1101
+# On Windows, port might be COM3, COM4, etc.
+```
+
+### Option 2: Using Web-based ESP32 Flasher
+
+You can use online ESP32 flashing tools that work directly in Chrome/Edge
+browsers:
+
+- **ESP Web Tools**:
+  [https://esphome.github.io/esp-web-tools/](https://esphome.github.io/esp-web-tools/)
+- **ESP Tool Online**:
+  [https://espressif.github.io/esptool-js/](https://espressif.github.io/esptool-js/)
+
+1. **Download firmware.bin** from
+   [Releases](https://github.com/Pharkie/ESP32-C3-OLED-Demo/releases)
+2. **Open web flasher** in Chrome or Edge browser
+3. **Connect ESP32-C3** via USB
+4. **Select firmware.bin** and flash at address `0x10000`
+
+_Note: Requires Chrome/Edge browser with Web Serial API support_
+
+### Option 3: Using ESP32 Flash Download Tool
+
+1. **Download firmware**: Get `firmware.bin` from
+   [Releases](https://github.com/Pharkie/ESP32-C3-OLED-Demo/releases)
+2. **Install ESP32 Flash Tool**: Download from
+   [Espressif](https://www.espressif.com/en/support/download/other-tools)
+3. **Flash settings**:
+   - **Chip Type**: ESP32-C3
+   - **firmware.bin** at address `0x10000`
+   - **Boot Mode**: UART
+   - **Flash Size**: 4MB
+4. **Connect ESP32-C3** via USB and click "START"
+
 ## Pin Configuration
 
 The project is configured for the specific ESP32-C3 OLED board pinout:
@@ -106,6 +154,14 @@ The QR code test generates a scannable code linking to this GitHub repository:
 - Hold phone 8-12 inches away with good lighting
 
 ## How to Use
+
+### Option A: Flash Pre-built Firmware (Easiest)
+
+Use the pre-built firmware from
+[Releases](https://github.com/Pharkie/ESP32-C3-OLED-Demo/releases) - see "Quick
+Flash" section above.
+
+### Option B: Build from Source (Development)
 
 1. **Open in VS Code with PlatformIO**:
 
