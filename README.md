@@ -31,9 +31,10 @@ The demo cycles across 9 different display tests, changing every 2 seconds:
 8. **Gradient Test** - Dithered gradient effect using pixel patterns
 9. **QR Code** - Links to this GitHub repository (scannable with QR apps)
 
-## Pre-built Firmware
+## Install via Firmware
 
-Flash the pre-built firmware :
+Download the pre-built firmware caled 'firmware.bin' available from the Releases
+page on Github, then flash it to your device using one of these options:
 
 ### Option 1: Using esptool.py
 
@@ -77,7 +78,7 @@ browsers:
    - **Flash Size**: 4MB
 4. **Connect ESP32-C3** via USB and click "START"
 
-## Development Setup
+## Build Yourself
 
 You can modify the code or build from source using VS Code / PlatformIO.
 
