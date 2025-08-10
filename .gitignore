@@ -1,0 +1,119 @@
+# Compiled Object files
+*.o
+*.obj
+*.elf
+*.bin
+*.hex
+*.map
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# ESP-IDF specific
+build/
+sdkconfig
+sdkconfig.old
+dependencies.lock
+
+# PlatformIO specific
+.pio/
+.pioenvs/
+.piolibdeps/
+lib_deps/
+libdeps/
+
+# Arduino IDE specific
+*.hex
+*.elf
+*.map
+libraries/
+
+# VSCode specific
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# Log files
+*.log
+
+# IDE specific
+*.sublime-project
+*.sublime-workspace
+
+# Node modules (if using web-based tools)
+node_modules/
+
+# Python cache (if using Python tools)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+.env.local
+
+# Backup files
+*.backup
+*.bck
+
+# Documentation builds
+docs/_build/
+
+# Test coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# ESP32 specific bootloader and partition files (keep source, ignore compiled)
+*.bin
+bootloader.bin
+partitions.bin
+
+# Serial monitor logs
+serial_monitor_*.log
+
+# Custom build outputs
+firmware/
+dist/
