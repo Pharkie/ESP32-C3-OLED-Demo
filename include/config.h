@@ -61,7 +61,9 @@ extern Adafruit_SH1106G display;
 #define SDA_PIN 5  // I2C Data
 #define SCL_PIN 6  // I2C Clock
 #define LED_PIN 8  // Onboard LED
+#ifndef BOOT_PIN
 #define BOOT_PIN 9 // Boot button
+#endif
 
 // QR Code configuration
 #define QR_CODE_URL "https://github.com/Pharkie/ESP32-C3-OLED-Demo"
