@@ -29,14 +29,18 @@ Adafruit_SH1106G display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 void setup()
 {
+    delay(1000); // Wait for 1s
     // Initialize serial communication for debugging
     Serial.begin(115200);
 
     // Wait for serial port to connect (useful for debugging)
     while (!Serial)
+    unsigned long startSerial = millis();
+    while (!Serial && (millis() - startSerial < 1000))
     {
         delay(10);
     }
+    delay(200);
 
 #if defined(USE_SSD1306)
     Serial.println("ESP32-C3 OLED Hello World Demo (SSD1306)");
@@ -98,6 +102,14 @@ void setup()
 
 void loop()
 {
+    // Echo serial data received
+    if (Serial.available())
+    {
+        char c = Serial.read();
+        Serial.print("Received: ");
+        Serial.println(c);
+    }
+
     // // Just display QR code (comment out cycling for testing)
     // displayQRCode();
     // delay(100);
@@ -113,6 +125,8 @@ void loop()
     { // Change timing based on current test
         lastChange = millis();
         testMode = (testMode + 1) % 9; // Now 9 different tests
+        Serial.print("Test: "); // Print current test to serial
+        Serial.println(testMode);
     }
 
     switch (testMode)
