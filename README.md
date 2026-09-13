@@ -84,10 +84,11 @@ You can modify the code or build from source using VS Code / PlatformIO.
 
 ### Required Libraries Auto-installed by PlatformIO:
 
-1. **Adafruit SH110X** - SH1106 OLED display driver (works better than SSD1306)
-2. **Adafruit GFX Library** - Graphics library for drawing functions
-3. **QRCode** - QR code generation library
-4. **Wire** - Built-in I2C library
+1. **Adafruit SSD1306** - SSD1306 OLED display driver (standard on most 0.42" boards)
+2. **Adafruit SH110X** - SH1106 OLED display driver (alternative driver)
+3. **Adafruit GFX Library** - Graphics library for drawing functions
+4. **QRCode** - QR code generation library
+5. **Wire** - Built-in I2C library
 
 ### Setup Steps:
 
@@ -102,7 +103,7 @@ The code is organized into modular files:
 
 ```
 ├── include/
-│   ├── config.h           # Hardware configuration and constants
+│   ├── config.h           # Hardware configuration, driver selection, and constants
 │   ├── display_helpers.h  # Helper function declarations
 │   └── display_tests.h    # Test function declarations
 ├── src/
@@ -122,24 +123,48 @@ The code is organized into modular files:
 
 ## Configuration Tips
 
-The project is configured for the specific ESP32-C3 OLED board pinout:
+### Display Driver Selection (SSD1306 vs. SH1106)
+
+Some ESP32-C3 0.42" OLED boards may have either an **SSD1306** or an **SH1106** controller chip:
+- **SSD1306** is nowadays the most common driver on these boards.
+- **SH1106** is a different controller used on some boards.
+
+Select the display driver in `include/config.h`:
+
+```cpp
+//! =============================================================================
+// DISPLAY DRIVER CONFIG
+// Define USE_SSD1306 for SSD1306 (standard on most 0.42" OLED boards)
+// Define USE_SH1106 for SH1106
+// Only uncomment ONE of the following lines to select the display driver!
+// =============================================================================
+#define USE_SSD1306
+// #define USE_SH1106
+//! =============================================================================
+```
+
+> **Note:** If your board flashes successfully but the screen remains black, switch the driver define in `include/config.h` between `USE_SSD1306` and `USE_SH1106`.
+
+### Pinout & Screen Offsets
+
+The project is configured for the standard ESP32-C3 0.42" OLED board pinout:
 
 - **SDA (Data)**: GPIO5
 - **SCL (Clock)**: GPIO6
 - **LED**: GPIO8 (onboard LED for error indication)
-- **OLED Address**: 0x3C (standard for SH1106 displays)
-- **Display Size**: 72x40 pixels (declared as 128x64 with offset for
-  compatibility)
+- **OLED Address**: 0x3C (standard for SSD1306 / SH1106 displays)
+- **Display Size**: 72x40 pixels (declared as 128x64 with offset for compatibility)
 
-The display uses a calibrated offset (X=26, Y=24) to properly center content on
-the 72x40 screen. You may need to adjust the offset on your device.
+The display uses calibrated offsets to properly center content on the 72x40 screen:
+- **SSD1306**: `SCREEN_OFFSET_X = 28`, `SCREEN_OFFSET_Y = 24`
+- **SH1106**: `SCREEN_OFFSET_X = 26`, `SCREEN_OFFSET_Y = 24`
 
-Modify config values in `include/config.h`:
+You can adjust the pinout and offsets in `include/config.h`:
 
 ```cpp
 #define SDA_PIN 5
 #define SCL_PIN 6
-#define SCREEN_OFFSET_X 26
+#define SCREEN_OFFSET_X 28
 #define SCREEN_OFFSET_Y 24
 ```
 

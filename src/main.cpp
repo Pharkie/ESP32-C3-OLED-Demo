@@ -5,7 +5,8 @@
  * connected to an ESP32-C3 development board.
  *
  * PlatformIO Libraries (automatically installed via platformio.ini):
- * - adafruit/Adafruit SH110X (SH1106 driver works better than SSD1306)
+ * - adafruit/Adafruit SH110X
+ * - adafruit/Adafruit SSD1306
  * - adafruit/Adafruit GFX Library
  * - ricmoo/QRCode (for QR code generation)
  * - Wire (built-in Arduino library for I2C)
@@ -19,21 +20,33 @@
 #include "config.h"
 #include "display_tests.h"
 
-// Create display object for SH1106
+// Create display object for selected driver
+#if defined(USE_SSD1306)
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+#else
 Adafruit_SH1106G display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+#endif
 
 void setup()
 {
+    delay(1000); // Wait for 1s
     // Initialize serial communication for debugging
     Serial.begin(115200);
 
     // Wait for serial port to connect (useful for debugging)
     while (!Serial)
+    unsigned long startSerial = millis();
+    while (!Serial && (millis() - startSerial < 1000))
     {
         delay(10);
     }
+    delay(200);
 
+#if defined(USE_SSD1306)
+    Serial.println("ESP32-C3 OLED Hello World Demo (SSD1306)");
+#else
     Serial.println("ESP32-C3 OLED Hello World Demo (SH1106)");
+#endif
 
     // Initialize LED pin
     pinMode(LED_PIN, OUTPUT);
@@ -41,6 +54,24 @@ void setup()
     // Initialize I2C with custom pins
     Wire.begin(SDA_PIN, SCL_PIN);
 
+    // Initialize the OLED display
+#if defined(USE_SSD1306)
+    // SSD1306_SWITCHCAPVCC enables internal charge pump
+    if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
+    {
+        Serial.println(F("SSD1306 allocation failed"));
+        for (;;)
+        {
+            // Don't proceed, loop forever - blink LED to indicate error
+            digitalWrite(LED_PIN, HIGH);
+            delay(500);
+            digitalWrite(LED_PIN, LOW);
+            delay(500);
+            Serial.println("OLED initialization failed - check connections!");
+        }
+    }
+    Serial.println("SSD1306 OLED initialized successfully!");
+#else
     // Initialize the OLED display with SH1106 driver
     if (!display.begin(SCREEN_ADDRESS, true)) // true = reset display
     {
@@ -55,8 +86,8 @@ void setup()
             Serial.println("OLED initialization failed - check connections!");
         }
     }
-
     Serial.println("SH1106 OLED initialized successfully!");
+#endif
 
     // Clear the display buffer
     display.clearDisplay();
@@ -71,6 +102,14 @@ void setup()
 
 void loop()
 {
+    // Echo serial data received
+    if (Serial.available())
+    {
+        char c = Serial.read();
+        Serial.print("Received: ");
+        Serial.println(c);
+    }
+
     // // Just display QR code (comment out cycling for testing)
     // displayQRCode();
     // delay(100);
@@ -86,6 +125,8 @@ void loop()
     { // Change timing based on current test
         lastChange = millis();
         testMode = (testMode + 1) % 9; // Now 9 different tests
+        Serial.print("Test: "); // Print current test to serial
+        Serial.println(testMode);
     }
 
     switch (testMode)
